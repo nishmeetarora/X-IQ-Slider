@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IQ Slider settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <header class="page-head">
+        <img src="../icons/128.png" alt="" width="40" height="40" />
+        <div>
+          <h1>IQ Slider</h1>
+          <p class="sub">Filters your X For you feed by topic, substance and bait. The sliders live in the X sidebar; everything else is here.</p>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>Model</h2>
+        <div class="seg" role="radiogroup" aria-label="Provider" id="providerSeg"></div>
+
+        <label class="field">
+          <span class="label-row"><span>API key</span><a id="keyLink" target="_blank" rel="noopener">Get a key ↗</a></span>
+          <span class="key-row">
+            <input id="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key" />
+            <button type="button" class="ghost" id="toggleKey">Show</button>
+          </span>
+          <span class="help" id="providerHelp"></span>
+        </label>
+
+        <label class="field">
+          <span class="label-row"><span>Model</span><span class="help" id="modelHint"></span></span>
+          <input id="model" type="text" list="modelList" autocomplete="off" spellcheck="false" />
+          <datalist id="modelList"></datalist>
+        </label>
+
+        <div class="actions">
+          <button type="button" class="primary" id="test">Test connection</button>
+          <span class="saved" id="savedNote" aria-live="polite"></span>
+        </div>
+        <div class="test-result" id="testResult" hidden></div>
+      </section>
+
+      <section class="card">
+        <h2>About you <span class="optional">optional</span></h2>
+        <p class="help">A line or two about what you care about helps the model judge what counts as substance for you. Changing it re-scores posts as you scroll.</p>
+        <textarea id="aboutMe" rows="3" maxlength="1000" placeholder="e.g. Software engineer into AI, startups and philosophy. Crypto shilling and hustle-bro posts are noise to me."></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Feed</h2>
+        <div class="option">
+          <div><b>Filter on</b><p class="help">Following and pinned lists are usually already curated.</p></div>
+          <div class="seg small" data-setting="scope">
+            <button type="button" data-value="foryou">For you only</button>
+            <button type="button" data-value="home">All home tabs</button>
+          </div>
+        </div>
+        <div class="option">
+          <div><b>Filtered posts</b><p class="help">Collapsed posts show why they were hidden. Click one to show it.</p></div>
+          <div class="seg small" data-setting="hiddenStyle">
+            <button type="button" data-value="collapse">Collapse</button>
+            <button type="button" data-value="remove">Remove</button>
+          </div>
+        </div>
+        <div class="option">
+          <div><b>While scoring</b><p class="help">Most posts are scored before they reach the screen.</p></div>
+          <div class="seg small" data-setting="pendingStyle">
+            <button type="button" data-value="blur">Blur</button>
+            <button type="button" data-value="show">Show</button>
+          </div>
+        </div>
+        <label class="option check"><div><b>Score chips on posts</b><p class="help">IQ, topic and bait next to the author name. Hover or click one for the full breakdown.</p></div><input type="checkbox" data-setting="showBadges" /></label>
+        <label class="option check"><div><b>Hide ads</b><p class="help">Promoted posts, everywhere on X.</p></div><input type="checkbox" data-setting="hideAds" /></label>
+        <label class="option check"><div><b>Hide sidebar widgets</b><p class="help">Live on X, Today's News, What's happening, Who to follow and the rest.</p></div><input type="checkbox" data-setting="hideSidebar" /></label>
+        <label class="option check"><div><b>Hide follow suggestions in the feed</b><p class="help">“Who to follow” blocks between posts.</p></div><input type="checkbox" data-setting="hideSuggestions" /></label>
+      </section>
+
+      <section class="card">
+        <h2>Usage</h2>
+        <div class="usage" id="usage"></div>
+        <p class="help" id="usageNote"></p>
+        <div class="actions">
+          <button type="button" class="ghost" id="clearCache">Clear cached scores</button>
+          <span class="help" id="cacheNote"></span>
+        </div>
+      </section>
+    </main>
+    <script src="../src/shared/core.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

@@ -1,0 +1,654 @@
+{
+ "data": {
+  "home": {
+   "home_timeline_urt": {
+    "instructions": [
+     {
+      "type": "TimelineAddEntries",
+      "entries": [
+       {
+        "entryId": "tweet-2001",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2001",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_evals",
+               "core": {
+                "screen_name": "demo_evals",
+                "name": "Eval Notes (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2001",
+             "full_text": "Ran the same eval suite on three LLMs. The smallest model beat the largest on tool-call accuracy (91% vs 84%) once we fixed the prompt format.",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            },
+            "quoted_status_result": {
+             "result": {
+              "__typename": "Tweet",
+              "rest_id": "1001",
+              "core": {
+               "user_results": {
+                "result": {
+                 "__typename": "User",
+                 "rest_id": "udemo_benchmarks",
+                 "core": {
+                  "screen_name": "demo_benchmarks",
+                  "name": "Benchmarks (demo)"
+                 },
+                 "legacy": {}
+                }
+               }
+              },
+              "legacy": {
+               "id_str": "1001",
+               "full_text": "A benchmark score without the exact prompt template is close to meaningless. Publish the template or the number.",
+               "lang": "en",
+               "entities": {
+                "urls": [],
+                "media": []
+               }
+              }
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2002",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2002",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_hottakes",
+               "legacy": {
+                "screen_name": "demo_hottakes",
+                "name": "Hot Takes (demo)"
+               }
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2002",
+             "full_text": "Women today expect men to pay for everything but bring nothing to the table. Men, are you still dating? Be honest 👇",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "promoted-tweet-2003-abc",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2003",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_adco",
+               "core": {
+                "screen_name": "demo_adco",
+                "name": "AdCo (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2003",
+             "full_text": "Upgrade your workflow with AdCo Cloud. Try it free today! https://t.co/ad1",
+             "lang": "en",
+             "entities": {
+              "urls": [
+               {
+                "url": "https://t.co/ad1",
+                "expanded_url": "https://adco.example/try",
+                "display_url": "adco.example/try"
+               }
+              ]
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet",
+          "promotedMetadata": {
+           "advertiser_results": {
+            "result": {}
+           },
+           "disclosureType": "NoDisclosure"
+          }
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2004",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "TweetWithVisibilityResults",
+            "tweet": {
+             "__typename": "Tweet",
+             "rest_id": "2004",
+             "core": {
+              "user_results": {
+               "result": {
+                "__typename": "User",
+                "rest_id": "udemo_cat",
+                "core": {
+                 "screen_name": "demo_cat",
+                 "name": "Cat Person (demo)"
+                },
+                "legacy": {}
+               }
+              }
+             },
+             "legacy": {
+              "id_str": "2004",
+              "full_text": "my cat knocked my coffee off the desk, made direct eye contact, and then did the exact same thing with the spoon lol https://t.co/pic1",
+              "lang": "en",
+              "entities": {
+               "urls": [],
+               "media": []
+              },
+              "extended_entities": {
+               "media": [
+                {
+                 "type": "photo",
+                 "url": "https://t.co/pic1",
+                 "ext_alt_text": "A smug orange cat next to a spilled mug"
+                }
+               ]
+              }
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2005",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2005",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_reposter",
+               "core": {
+                "screen_name": "demo_reposter",
+                "name": "Reposter (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2005",
+             "full_text": "RT @demo_dbtips: Postgres tip...",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             },
+             "retweeted_status_result": {
+              "result": {
+               "__typename": "Tweet",
+               "rest_id": "2006",
+               "core": {
+                "user_results": {
+                 "result": {
+                  "__typename": "User",
+                  "rest_id": "udemo_dbtips",
+                  "core": {
+                   "screen_name": "demo_dbtips",
+                   "name": "DB Tips (demo)"
+                  },
+                  "legacy": {}
+                 }
+                }
+               },
+               "legacy": {
+                "id_str": "2006",
+                "full_text": "Postgres tip: a partial index on (user_id) WHERE deleted_at IS NULL cut our p95 latency from 180ms to 9ms.",
+                "lang": "en",
+                "entities": {
+                 "urls": [],
+                 "media": []
+                }
+               }
+              }
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2007",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2007",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_hustle",
+               "core": {
+                "screen_name": "demo_hustle",
+                "name": "Hustle Coach (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2007",
+             "full_text": "Nobody is coming to save you. Wake up at 4am, grind while they sleep, …",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            },
+            "note_tweet": {
+             "is_expandable": true,
+             "note_tweet_results": {
+              "result": {
+               "text": "Nobody is coming to save you. Wake up at 4am, grind while they sleep, and stop making excuses. Let's go 🔥",
+               "entity_set": {
+                "urls": []
+               }
+              }
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "who-to-follow-2008",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineModule",
+         "__typename": "TimelineTimelineModule",
+         "displayType": "Vertical",
+         "items": [
+          {
+           "entryId": "who-to-follow-2008-user-1",
+           "item": {
+            "itemContent": {
+             "itemType": "TimelineUser",
+             "__typename": "TimelineUser",
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_popular",
+               "core": {
+                "screen_name": "demo_popular",
+                "name": "Popular Account (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            }
+           }
+          }
+         ]
+        }
+       },
+       {
+        "entryId": "home-conversation-2009",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineModule",
+         "__typename": "TimelineTimelineModule",
+         "displayType": "VerticalConversation",
+         "items": [
+          {
+           "entryId": "home-conversation-2009-tweet-2010",
+           "item": {
+            "itemContent": {
+             "itemType": "TimelineTweet",
+             "__typename": "TimelineTweet",
+             "tweet_results": {
+              "result": {
+               "__typename": "Tweet",
+               "rest_id": "2010",
+               "core": {
+                "user_results": {
+                 "result": {
+                  "__typename": "User",
+                  "rest_id": "udemo_stoic",
+                  "core": {
+                   "screen_name": "demo_stoic",
+                   "name": "Stoic Notes (demo)"
+                  },
+                  "legacy": {}
+                 }
+                }
+               },
+               "legacy": {
+                "id_str": "2010",
+                "full_text": "Marcus Aurelius on attention: you lose only the present moment, so guard it. Plato said something similar about the soul.",
+                "lang": "en",
+                "entities": {
+                 "urls": [],
+                 "media": []
+                }
+               }
+              }
+             }
+            }
+           }
+          },
+          {
+           "entryId": "home-conversation-2009-tweet-2011",
+           "item": {
+            "itemContent": {
+             "itemType": "TimelineTweet",
+             "__typename": "TimelineTweet",
+             "tweet_results": {
+              "result": {
+               "__typename": "Tweet",
+               "rest_id": "2011",
+               "core": {
+                "user_results": {
+                 "result": {
+                  "__typename": "User",
+                  "rest_id": "udemo_celeb",
+                  "core": {
+                   "screen_name": "demo_celeb",
+                   "name": "Celeb Watch (demo)"
+                  },
+                  "legacy": {}
+                 }
+                }
+               },
+               "legacy": {
+                "id_str": "2011",
+                "full_text": "The celebrity feud everyone is talking about just got messier. Full drama thread below!",
+                "lang": "en",
+                "entities": {
+                 "urls": [],
+                 "media": []
+                },
+                "in_reply_to_status_id_str": "2010"
+               }
+              }
+             }
+            }
+           }
+          }
+         ]
+        }
+       },
+       {
+        "entryId": "tweet-2012",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2012",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_health",
+               "core": {
+                "screen_name": "demo_health",
+                "name": "Health Studies (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2012",
+             "full_text": "New RCT: 12 weeks of resistance training cut HbA1c by 0.6 points in adults with type 2 diabetes, about the same as adding a second drug.",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2013",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2013",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_capitol",
+               "core": {
+                "screen_name": "demo_capitol",
+                "name": "Capitol Notes (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2013",
+             "full_text": "The Senate vote on the budget bill is tonight. Here is what is actually in it, section by section.",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2014",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2014",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_physics",
+               "core": {
+                "screen_name": "demo_physics",
+                "name": "Physics Notes (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2014",
+             "full_text": "Thread: why the arrow of time falls out of the low-entropy boundary condition of the early universe, and why that is not circular. 1/12",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "tweet-2015",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineTweet",
+          "__typename": "TimelineTweet",
+          "tweet_results": {
+           "result": {
+            "__typename": "Tweet",
+            "rest_id": "2015",
+            "core": {
+             "user_results": {
+              "result": {
+               "__typename": "User",
+               "rest_id": "udemo_gamer",
+               "core": {
+                "screen_name": "demo_gamer",
+                "name": "Gamer (demo)"
+               },
+               "legacy": {}
+              }
+             }
+            },
+            "legacy": {
+             "id_str": "2015",
+             "full_text": "me: I'll play one ranked match before bed. also me at 4am, defending my honor in a match that does not matter lol",
+             "lang": "en",
+             "entities": {
+              "urls": [],
+              "media": []
+             }
+            }
+           }
+          },
+          "tweetDisplayType": "Tweet"
+         }
+        }
+       },
+       {
+        "entryId": "rtb-image-ad-9f3a",
+        "sortIndex": "1",
+        "content": {
+         "entryType": "TimelineTimelineItem",
+         "__typename": "TimelineTimelineItem",
+         "itemContent": {
+          "itemType": "TimelineRtbImageAd",
+          "__typename": "TimelineRtbImageAd"
+         }
+        }
+       },
+       {
+        "entryId": "cursor-top-123",
+        "sortIndex": "2",
+        "content": {
+         "entryType": "TimelineTimelineCursor",
+         "__typename": "TimelineTimelineCursor",
+         "value": "abc",
+         "cursorType": "Top"
+        }
+       }
+      ]
+     }
+    ],
+    "metadata": {}
+   }
+  }
+ }
+}

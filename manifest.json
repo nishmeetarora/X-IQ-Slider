@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "IQ Slider for X",
+  "version": "0.2.0",
+  "description": "Filters your X For you feed by topic, substance and bait with a cheap LLM, hides ads, and swaps the sidebar clutter for one control panel.",
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "action": {
+    "default_title": "IQ Slider settings",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "permissions": ["storage", "unlimitedStorage"],
+  "host_permissions": ["https://opencode.ai/*", "https://openrouter.ai/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["src/page/hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": [
+        "src/shared/core.js",
+        "src/content/timeline.js",
+        "src/content/dom.js",
+        "src/content/chip.js",
+        "src/content/feed.js",
+        "src/content/widget.js",
+        "src/content/sidebar.js",
+        "src/content/main.js"
+      ],
+      "css": ["src/content/content.css"],
+      "run_at": "document_start"
+    }
+  ]
+}
