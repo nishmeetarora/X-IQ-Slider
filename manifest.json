@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "IQ Slider for X",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Filters your X For you feed by topic, substance and bait with a cheap LLM, hides ads, and swaps the sidebar clutter for one control panel.",
   "icons": {
     "16": "icons/16.png",

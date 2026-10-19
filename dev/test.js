@@ -138,6 +138,12 @@ test('prompt lists every post with quote, media and index', () => {
   assert.match(msgs[1].content, /\[image: A smug orange cat/);
   assert.match(msgs[1].content, new RegExp(`Score these ${tweets.length} posts`));
 });
+test('prompt treats original ideas as substance and keeps platitudes low', () => {
+  const sys = prompt.systemPrompt('');
+  assert.match(sys, /Ideas count as much as facts/);
+  assert.match(sys, /fake-deep/);
+  assert.match(sys, /philosophy = philosophy, psychology, meaning, ethics/);
+});
 test('parseScores maps indices back to ids and normalizes values', () => {
   const reply = '```json\n{"r":[{"i":0,"t":"AI","s":7.4,"b":1,"f":0,"w":"concrete claim"},{"i":1,"t":"culture war","s":1,"b":12,"f":0,"w":"bait"},{"i":2,"t":"weird","s":"3","b":0,"f":9}]}\n```';
   const out = prompt.parseScores(reply, tweets);

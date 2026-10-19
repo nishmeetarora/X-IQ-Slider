@@ -111,7 +111,7 @@
   };
 
   // Bump when the scoring prompt or score format changes so cached scores get redone.
-  const PROMPT_VERSION = 2;
+  const PROMPT_VERSION = 3;
 
   const STORAGE = {
     settings: 'xiq:settings',

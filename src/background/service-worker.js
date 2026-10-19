@@ -216,6 +216,12 @@ const SAMPLES = [
     text: 'my cat knocked my coffee off the desk, made direct eye contact, and then did the exact same thing with the spoon',
     media: [],
   },
+  {
+    id: 'sample-4',
+    user: { handle: 'demo_thinker', name: 'Thinker (demo)' },
+    text: "You don't choose what you notice first, but you do choose what you keep looking at. Over a lifetime, that second glance is most of who you become.",
+    media: [],
+  },
 ];
 
 async function testConnection(llm) {

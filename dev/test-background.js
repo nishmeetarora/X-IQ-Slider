@@ -219,9 +219,9 @@ async function main() {
     w.store[llmKey] = { provider: 'opencode-go', keys: { 'opencode-go': 'k' } };
     const res = await w.send({ type: 'test', llm: w.store[llmKey] });
     assert.equal(res.ok, true);
-    assert.equal(res.samples.length, 3);
+    assert.equal(res.samples.length, 4);
     assert.ok(res.samples.every((s) => s.score && s.score.t === 'tech'));
-    ok('settings-page connection test scores the three samples');
+    ok('settings-page connection test scores the four samples');
   }
 
   console.log(`\n${passed} passed`);

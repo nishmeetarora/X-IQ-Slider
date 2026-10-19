@@ -95,7 +95,7 @@
     btn.textContent = 'Testing…';
     box.hidden = false;
     box.className = 'test-result';
-    box.textContent = 'Scoring three sample posts…';
+    box.textContent = 'Scoring four sample posts…';
     try {
       const res = await chrome.runtime.sendMessage({ type: 'test', llm });
       if (!res || !res.ok) throw new Error(res?.error || 'No response from the extension');
