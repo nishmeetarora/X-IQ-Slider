@@ -45,6 +45,14 @@ Both use OpenAI-style chat completions with JSON mode and thinking turned off. I
 
 **OpenCode Go caveat:** OpenCode's docs say Go is designed for OpenCode and other coding agents, and that traffic is monitored for abuse. Feed classification isn't coding-agent traffic, so heavy use could get flagged. OpenRouter has no such restriction.
 
+## Publishing to the Chrome Web Store
+
+```bash
+./scripts/package.sh
+```
+
+That runs the tests and builds `dist/iq-slider-<version>.zip` with only the files the extension needs. Everything the dashboard asks for (description, permission justifications, data-use answers, test instructions) is in [store/listing.md](store/listing.md). The screenshots and promo tile are in `store/`. The privacy policy is published at https://nishmeet.com/extensions/iq-slider/privacy (source copy: [PRIVACY.md](PRIVACY.md); keep the two in sync). Bump `version` in `manifest.json` before each new upload.
+
 ## Privacy
 
 Post text, author handles, image alt text and link titles from your For you feed go to the provider you pick. Nothing else does. Your API key stays in `chrome.storage.local` on this machine. Don't publish the extension with a key in it.

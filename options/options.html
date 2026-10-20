@@ -9,7 +9,7 @@
   <body>
     <main>
       <header class="page-head">
-        <img src="../icons/128.png" alt="" width="40" height="40" />
+        <img src="../icons/48.png" alt="" width="40" height="40" />
         <div>
           <h1>IQ Slider</h1>
           <p class="sub">Filters your X For you feed by topic, substance and bait. The sliders live in the X sidebar; everything else is here.</p>
@@ -34,6 +34,12 @@
           <input id="model" type="text" list="modelList" autocomplete="off" spellcheck="false" />
           <datalist id="modelList"></datalist>
         </label>
+
+        <p class="help privacy">
+          <b>What gets sent:</b> to score posts, the text of posts in your For you feed (with author handles, image descriptions and link titles)
+          goes to the provider above, using your key. Nothing is sent to the extension's developer. Your key, settings and scores stay on this computer.
+          <a href="https://nishmeet.com/extensions/iq-slider/privacy" target="_blank" rel="noopener">Privacy policy</a>
+        </p>
 
         <div class="actions">
           <button type="button" class="primary" id="test">Test connection</button>

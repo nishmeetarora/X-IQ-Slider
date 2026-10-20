@@ -285,3 +285,19 @@ h2 + .option {
 #usageNote {
   margin-top: 10px;
 }
+.privacy {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--raised);
+}
+.privacy b {
+  color: var(--fg);
+}
+.privacy a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.privacy a:hover {
+  text-decoration: underline;
+}

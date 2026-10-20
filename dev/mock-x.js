@@ -2,6 +2,7 @@
 // and fetches the fixture through XHR at a HomeTimeline-looking URL so the page hook sees it.
 (function () {
   'use strict';
+  const params = new URLSearchParams(location.search);
   history.replaceState(null, '', '/home');
 
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -110,6 +111,21 @@
   }, 300);
 
   window.addEventListener('DOMContentLoaded', load);
+
+  // ?shots hides the left nav so the feed and panel fill a store screenshot.
+  if (params.has('shots')) window.addEventListener('DOMContentLoaded', () => (document.querySelector('header.nav').style.display = 'none'));
+
+  // ?card opens the first score chip's card once posts are scored (for store screenshots).
+  if (params.has('card')) {
+    setTimeout(() => {
+      const chip = document.querySelector('.xiq-chip');
+      if (!chip) return;
+      chip.click();
+      // Skip the fade-in so a headless screenshot never catches it half-transparent.
+      const card = document.querySelector('.xiq-card-host');
+      if (card) card.shadowRoot.querySelector('.card').style.animation = 'none';
+    }, 1800);
+  }
 
   // Dev helpers for the console / automation.
   window.__xiqMock = {

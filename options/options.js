@@ -102,7 +102,8 @@
       const rows = res.samples
         .map((s) => {
           const sc = s.score;
-          const nums = sc ? `${esc(XIQ.topicLabel(sc.t))} · 🧠${sc.s} 🎣${sc.b} 😂${sc.f}` : 'missing';
+          const topic = sc ? XIQ.topicOf(sc.t) : null;
+          const nums = sc ? `<b>IQ ${XIQ.substanceToIq(sc.s)}</b> · ${topic.icon} ${esc(topic.label)}<br>bait ${sc.b} · fun ${sc.f}` : 'missing';
           return `<tr><td>${esc(s.text)}${sc?.w ? `<div class="help">“${esc(sc.w)}”</div>` : ''}</td><td class="num">${nums}</td></tr>`;
         })
         .join('');
