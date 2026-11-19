@@ -100,12 +100,11 @@ Filters the X (Twitter) home feed: it scores posts with an AI model the user cho
 
 ## Test instructions tab
 
-Reviewers need a working key to see scoring. Create a dedicated OpenRouter key with a small credit limit (for example $1), paste it below, and revoke it once the review is done.
+The field allows 500 characters. Reviewers need a working key to see scoring, so create a dedicated OpenRouter key with a small credit limit (for example $1), put it where `KEY` is, and revoke it after the review. With a full 73-character OpenRouter key the text below is 447 characters.
 
 ```
-1. Open the extension's settings (click the toolbar icon). Choose OpenRouter and paste this test key: <KEY>. Model: deepseek/deepseek-v4.1-flash. Click "Test connection" to see four sample posts scored.
-2. Go to https://x.com/home while logged in to any X account, on the "For you" tab.
-3. Posts are scored as they load. Kept posts show a score chip next to the author name (hover it for details). Filtered posts collapse to a thin bar saying why; click one to show it.
-4. The right sidebar shows the IQ Slider panel. Switch moods (Teach me / Balanced / Nonsense) or drag the sliders and the feed re-filters instantly.
-Without a key, the extension still hides ads and sidebar widgets, and the panel shows "Add an API key".
+1. Click the extension icon to open Settings. Choose OpenRouter, paste this key: KEY and click Test connection.
+2. Open x.com/home (any account), For you tab.
+3. Kept posts show a score chip by the author name; hover it for details. Filtered posts collapse to a bar; click one to show it.
+4. Change moods or drag the sliders in the sidebar panel; the feed re-filters instantly.
 ```
