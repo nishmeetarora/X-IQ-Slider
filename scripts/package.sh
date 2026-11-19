@@ -6,6 +6,7 @@ cd "$(dirname "$0")/.."
 
 node dev/test.js > /dev/null
 node dev/test-background.js > /dev/null
+node dev/test-gate.js > /dev/null
 
 version=$(node -p "require('./manifest.json').version")
 out="dist/iq-slider-$version.zip"

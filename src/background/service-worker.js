@@ -3,11 +3,12 @@ importScripts('../shared/core.js', 'prompt.js', 'cache.js', 'providers.js');
 
 const { STORAGE } = XIQ;
 
-// Bigger batches mean fewer calls, so the fixed system prompt is paid for less often.
-// A feed page (~20-35 posts) arrives at once and gets split into even batches of at most MAX_BATCH.
-const MAX_BATCH = 24;
+// A feed page (~30 posts) arrives at once and gets split into even batches of at most MAX_BATCH, run in parallel.
+// The page waits for its scores before X shows it, and a model's reply time grows with its length, so smaller
+// batches in parallel come back sooner. The cost is the system prompt once more per batch, mostly cache hits.
+const MAX_BATCH = 12;
 const BATCH_DELAY_MS = 500;
-const MAX_IN_FLIGHT = 3;
+const MAX_IN_FLIGHT = 4;
 const MAX_ATTEMPTS = 2;
 
 const queue = []; // tweets waiting for a batch

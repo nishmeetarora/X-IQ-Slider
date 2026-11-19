@@ -66,6 +66,156 @@ test('replies are flagged', () => {
   assert.equal(byId['2011'].reply, true);
 });
 
+// The rewritten X web app (Nov 2026) serves a reshaped payload from api.x.com/graphql/<id>/HomeTimeline.
+{
+  const user = (h, n) => ({ result: { __typename: 'User', core: { screen_name: h, name: n }, rest_id: 'u' + h } });
+  const tw = (id, h, text, extra) =>
+    Object.assign(
+      {
+        __typename: 'Tweet',
+        rest_id: id,
+        core: { user_results: user(h, h + ' (demo)') },
+        details: { full_text: text, display_text_range: [0, Array.from(text).length] },
+        legacy: { conversation_id_str: id, entities: {}, lang: 'en' },
+        media_entities2: [],
+        url_entities: [],
+      },
+      extra
+    );
+  const item = (entryId, result, promoted) => ({
+    entry_id: entryId,
+    sort_index: '1',
+    content: {
+      __typename: 'TimelineTimelineItem',
+      content: Object.assign({ __typename: 'TimelineTweet', display_type: 'Tweet', tweet_results: { rest_id: result.rest_id, result } }, promoted ? { promoted_metadata: { impression_id: 'x' } } : {}),
+    },
+  });
+  const withMedia = 'Look at this chart 📈 https://t.co/media1';
+  const payload = {
+    data: {
+      home_timeline: {
+        home_timeline_urt: {
+          id: 'for_you',
+          instructions: [
+            {
+              __typename: 'TimelineAddEntries',
+              entries: [
+                { entry_id: 'cursor-top-1', content: { __typename: 'TimelineTimelineCursor', cursor_type: 'Top', value: 'a' } },
+                item('tweet-3001', tw('3001', 'demo_new', 'Read the paper https://t.co/abc', { url_entities: [{ url: 'https://t.co/abc', display_url: 'example.org/paper' }] })),
+                item('promoted-tweet-3002-ff', tw('3002', 'demo_brand', 'Buy one get one free'), true),
+                item(
+                  'tweet-3003',
+                  tw('3003', 'demo_charts', withMedia, {
+                    details: { full_text: withMedia, display_text_range: [0, Array.from('Look at this chart 📈').length] },
+                    media_entities2: [{ type: 'photo', ext_alt_text: 'A rising line chart', indices: [21, 44] }],
+                  })
+                ),
+                item('tweet-3005', tw('3004', 'demo_reposter', 'RT', { legacy: { retweeted_status_results: { rest_id: '3005', result: tw('3005', 'demo_orig', 'The original post') } } })),
+                item('tweet-3006', tw('3006', 'demo_quoter', 'Hard agree', { quoted_tweet_results: { rest_id: '3007', result: tw('3007', 'demo_quoted', 'Quoted thought') } })),
+                item('tweet-3008', { __typename: 'TweetWithVisibilityResults', tweet: tw('3008', 'demo_limited', 'Limited reach post') }),
+                {
+                  entry_id: 'home-conversation-3009',
+                  content: {
+                    __typename: 'TimelineTimelineModule',
+                    display_type: 'VerticalConversation',
+                    items: [
+                      { entry_id: 'tweet-3010', item: { __typename: 'TimelineTimelineItem', content: { __typename: 'TimelineTweet', tweet_results: { result: tw('3010', 'demo_op', 'Question?') } } } },
+                      { entry_id: 'tweet-3011', item: { __typename: 'TimelineTimelineItem', content: { __typename: 'TimelineTweet', tweet_results: { result: tw('3011', 'demo_replier', 'Answer.', { reply_to_results: { __typename: 'TweetResults', rest_id: '3010' } }) } } } },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  };
+  const r = parseTimeline(payload);
+  const by = Object.fromEntries(r.tweets.map((t) => [t.id, t]));
+  test('rewrite payload: every organic tweet parses, ads split out', () => {
+    assert.deepEqual(r.tweets.map((t) => t.id).sort(), ['3001', '3003', '3005', '3006', '3008', '3010', '3011']);
+    assert.deepEqual(r.promotedIds, ['3002']);
+  });
+  test('rewrite payload: author, links, media and display range', () => {
+    assert.equal(by['3001'].user.handle, 'demo_new');
+    assert.equal(by['3001'].text, 'Read the paper example.org/paper');
+    assert.equal(by['3003'].text, 'Look at this chart 📈');
+    assert.deepEqual(by['3003'].media, [{ type: 'image', alt: 'A rising line chart' }]);
+  });
+  test('rewrite payload: retweets, quotes, visibility wrapper and replies', () => {
+    assert.equal(by['3005'].user.handle, 'demo_orig');
+    assert.equal(by['3005'].retweetedBy, 'demo_reposter');
+    assert.equal(by['3004'], undefined);
+    assert.equal(by['3006'].quote.user.handle, 'demo_quoted');
+    assert.equal(by['3008'].text, 'Limited reach post');
+    assert.equal(by['3011'].reply, true);
+    assert.equal(by['3010'].reply, false);
+  });
+}
+{
+  const { stripTimeline } = require(path.join(root, 'src/content/timeline.js'));
+  const clone = (o) => JSON.parse(JSON.stringify(o));
+  const entryIds = (j) => {
+    const urt = j.data.home ? j.data.home.home_timeline_urt : j.data.home_timeline.home_timeline_urt;
+    return urt.instructions.flatMap((i) => i.entries || []).map((e) => e.entryId || e.entry_id);
+  };
+  test('strip (old format): hidden posts, ads, ad units and who-to-follow go; cursors stay', () => {
+    const j = clone(fixture);
+    const r = stripTimeline(j, { dropIds: new Set(['2002', '2006', '2011']), dropAds: true, dropSuggestions: true });
+    const ids = entryIds(j);
+    assert.ok(r.changed);
+    assert.ok(!ids.includes('tweet-2002'));
+    assert.ok(!ids.includes('tweet-2005'), 'a repost goes when its original post is hidden');
+    assert.ok(!ids.includes('promoted-tweet-2003-abc') && !ids.includes('rtb-image-ad-9f3a'));
+    assert.ok(!ids.includes('who-to-follow-2008'));
+    assert.ok(ids.includes('cursor-top-123') && ids.includes('tweet-2001'));
+    assert.ok(ids.includes('home-conversation-2009'), 'a mixed conversation stays whole');
+    assert.equal(parseTimeline(j).tweets.map((t) => t.id).includes('2011'), true);
+    assert.deepEqual([r.posts, r.ads, r.modules], [2, 2, 1]);
+  });
+  test('strip: a conversation whose posts are all hidden goes entirely; nothing to drop leaves it unchanged', () => {
+    const j = clone(fixture);
+    stripTimeline(j, { dropIds: new Set(['2010', '2011']) });
+    assert.ok(!entryIds(j).includes('home-conversation-2009'));
+    const k = clone(fixture);
+    assert.equal(stripTimeline(k, { dropIds: new Set(), dropAds: false, dropSuggestions: false }).changed, false);
+    assert.deepEqual(k, fixture);
+  });
+}
+test('strip (rewrite format): posts, ads and conversation items by parsed id', () => {
+  const { stripTimeline } = require(path.join(root, 'src/content/timeline.js'));
+  const t = (id, extra) => Object.assign({ __typename: 'Tweet', rest_id: id, core: { user_results: { result: { core: { screen_name: 'demo_' + id, name: 'D' } } } }, details: { full_text: 'x' }, legacy: {} }, extra);
+  const item = (eid, result, promo) => ({ entry_id: eid, content: { __typename: 'TimelineTimelineItem', content: Object.assign({ __typename: 'TimelineTweet', tweet_results: { result } }, promo ? { promoted_metadata: {} } : {}) } });
+  const j = { data: { home_timeline: { home_timeline_urt: { instructions: [{ __typename: 'TimelineAddEntries', entries: [
+    { entry_id: 'cursor-top-1', content: { __typename: 'TimelineTimelineCursor', value: 'a' } },
+    item('tweet-1', t('1')),
+    item('promoted-tweet-2-x', t('2'), true),
+    item('tweet-3', t('3', { legacy: { retweeted_status_results: { result: t('4') } } })),
+    { entry_id: 'home-conversation-5', content: { __typename: 'TimelineTimelineModule', items: [
+      { entry_id: 'tweet-6', item: { content: { __typename: 'TimelineTweet', tweet_results: { result: t('6') } } } },
+      { entry_id: 'tweet-7', item: { content: { __typename: 'TimelineTweet', tweet_results: { result: t('7') } } } },
+    ] } },
+    { entry_id: 'cursor-bottom-1', content: { __typename: 'TimelineTimelineCursor', value: 'b' } },
+  ] }] } } } };
+  const r = stripTimeline(j, { dropIds: new Set(['4', '6']), dropAds: true, dropSuggestions: true });
+  const entries = j.data.home_timeline.home_timeline_urt.instructions[0].entries;
+  assert.deepEqual(entries.map((e) => e.entry_id), ['cursor-top-1', 'tweet-1', 'home-conversation-5', 'cursor-bottom-1']);
+  assert.deepEqual(entries[2].content.items.map((i) => i.entry_id), ['tweet-6', 'tweet-7'], 'mixed conversation untouched');
+  assert.deepEqual([r.posts, r.ads], [1, 1]);
+  const { cursorsOf, requestCursor } = require(path.join(root, 'src/content/timeline.js'));
+  assert.deepEqual(cursorsOf(j), { top: ['a'], bottom: ['b'] });
+  assert.equal(requestCursor('https://api.x.com/graphql/x/HomeTimeline?variables=' + encodeURIComponent(JSON.stringify({ count: 20, cursor: 'b' }))), 'b');
+  assert.equal(requestCursor('https://api.x.com/graphql/x/HomeTimeline?variables=%7B%7D'), null);
+});
+test('hook matches both timeline API hosts', () => {
+  const src = fs.readFileSync(path.join(root, 'src/page/hook.js'), 'utf8');
+  const re = eval(src.match(/const OPS = (\/.*\/);/)[1]);
+  assert.equal('https://x.com/i/api/graphql/abc/HomeTimeline?variables=1'.match(re)[1], 'HomeTimeline');
+  assert.equal('https://api.x.com/graphql/DR6r_R_zsb/HomeTimeline?variables=1'.match(re)[1], 'HomeTimeline');
+  assert.equal('https://api.x.com/graphql/x/newsSidebarQuery'.match(re), null);
+});
+
 test('decide: muted topic always hides', () => {
   const s = core.mergeSettings(null);
   assert.deepEqual(core.decide({ t: 'culture_war', s: 9, b: 0, f: 0 }, s), { hide: true, reason: 'topic' });

@@ -1,16 +1,23 @@
-/* Theme variables are set on <html> by main.js from X's own background color. */
+/* Defaults until main.js reads X's background and writes the real values (in <style id="xiq-theme">). */
 :root {
   --xiq-bg: rgb(0, 0, 0);
-  --xiq-fg: rgb(231, 233, 234);
-  --xiq-muted: rgb(113, 118, 123);
-  --xiq-border: rgb(47, 51, 54);
-  --xiq-raised: rgb(22, 24, 28);
-  --xiq-track: rgb(51, 54, 57);
+  --xiq-fg: rgb(242, 242, 242);
+  --xiq-muted: rgb(145, 145, 145);
+  --xiq-border: rgba(255, 255, 255, 0.12);
+  --xiq-raised: rgba(255, 255, 255, 0.06);
+  --xiq-hover: rgba(255, 255, 255, 0.1);
+  --xiq-track: rgba(255, 255, 255, 0.16);
+  --xiq-danger: rgb(255, 99, 105);
 }
 
 /* Whole timeline cells: ads, filtered posts in "remove" mode, and in-feed follow suggestions. */
-[data-testid="cellInnerDiv"][data-xiq-remove] > * {
+[data-testid="cellInnerDiv"][data-xiq-remove] > *,
+li[data-index][data-xiq-remove] > * {
   display: none !important;
+}
+/* The rewrite's virtualized list ignores items that measure 0px and leaves a gap; 1px makes it reflow. */
+li[data-index][data-xiq-remove] {
+  min-height: 1px;
 }
 
 /* Hidden sidebar widgets. */
@@ -24,6 +31,20 @@
 
 article[data-xiq-state] {
   position: relative;
+}
+
+/* A removed post inside a cell that still shows another post (a conversation drawn as one list item). */
+article[data-xiq-state="removed"] {
+  display: none !important;
+}
+
+/* The rewrite's author row draws a "·" before every child and resets margins; the chip has its own spacing. */
+.xiq-chip::before {
+  content: none !important;
+  display: none !important;
+}
+.xiq-chip {
+  margin-left: 8px !important;
 }
 
 /* Waiting for a score. */
@@ -84,5 +105,5 @@ article[data-xiq-state="collapsed"]::after {
 }
 article[data-xiq-state="collapsed"]:hover::before {
   color: var(--xiq-fg);
-  background: var(--xiq-raised);
+  background: var(--xiq-hover);
 }

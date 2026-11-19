@@ -61,11 +61,22 @@ Post text, author handles, image alt text and link titles from your For you feed
 
 All selectors for X's page are in [src/content/dom.js](src/content/dom.js), and feed parsing is in [src/content/timeline.js](src/content/timeline.js). If posts stop being scored, check that the page hook still sees `HomeTimeline` responses (see [src/page/hook.js](src/page/hook.js)). The content script also falls back to reading text from the page.
 
+## How filtering stays smooth
+
+X's feed is a virtualized list: it measures each post and positions the rest from those sizes. Hiding a post after X has measured it makes the feed jump, go briefly blank, or stall. So the extension decides first:
+
+- **Score before X draws.** The page hook holds each `HomeTimeline` response while its posts are scored, and releases it as soon as they all have scores (cached posts are instant). Posts hidden in "remove" mode, ads and Who-to-follow modules are taken out of the response, so X never lays them out.
+- **Report removed posts as seen.** X keeps recommending posts the reader hasn't seen, and a removed post is never seen. Measured on a real feed, 15-30 of every ~31 posts were repeats after a few pages, so a strict filter ran the feed dry. The hook adds removed posts to the next request's `seenTweetIds`, the list X's own app uses for this. That is the only change the extension makes to a request.
+- **Unscored posts wait for later.** The first page waits up to 6 s and shows anything still unscored. Later pages wait up to 4.5 s; in remove mode, posts still unscored are held back and not reported as seen, so X sends them again on a later page, scored by then.
+- **Never stall.** X's infinite scroll stops when a page adds nothing new to its list (it ignores posts it already has). A page with no new survivor keeps one removed post X hasn't had yet, hidden on the page as it mounts.
+- **Never resize a post you've seen.** A score that arrives after a post was on screen only updates its chip. Only a settings change or Show/Hide resizes it.
+- Responses for newer posts at the top of the feed ("Show N posts") pass through untouched.
+
 ## Layout
 
 ```
 manifest.json
-src/page/hook.js            copies X's timeline API responses (page world, read-only)
+src/page/hook.js            holds X's timeline API responses until posts are scored, hands X a filtered copy (page world)
 src/content/                content script: timeline parser, DOM helpers, feed filter, score chips, sidebar, panel
 src/background/             service worker: batching queue, prompt, providers, score cache
 src/shared/core.js          topics, moods, defaults, filter rule, provider config
@@ -76,7 +87,7 @@ dev/                        tests, mock X page, fixture
 ## Development
 
 ```bash
-node dev/test.js && node dev/test-background.js
+node dev/test.js && node dev/test-background.js && node dev/test-gate.js
 ```
 
 [dev/mock-x.html](dev/mock-x.html) runs the real content scripts on a rough copy of X's home page, with a fake background that scores by keyword. Serve the project root (`python3 -m http.server 8765`) and open `http://localhost:8765/dev/mock-x.html`. After editing the extension, click reload on `chrome://extensions` and refresh x.com.

@@ -104,10 +104,10 @@ async function main() {
   {
     const w = makeWorld((url, init, body) => modelReply(body));
     w.store[llmKey] = { provider: 'opencode-go', keys: { 'opencode-go': 'oc_sk_test' } };
-    const res = await w.send({ type: 'score', tweets: tweets(20) });
+    const res = await w.send({ type: 'score', tweets: tweets(12) });
     eq(res.hits, {});
     await sleep(600);
-    assert.equal(w.calls.length, 1, 'a 20-post page is one call');
+    assert.equal(w.calls.length, 1, '12 posts are one call');
     const c = w.calls[0];
     assert.equal(c.url, 'https://opencode.ai/inference/go/openai/v1/chat/completions');
     assert.equal(c.headers.Authorization, 'Bearer oc_sk_test');
@@ -117,16 +117,16 @@ async function main() {
     eq(c.body.response_format, { type: 'json_object' });
     assert.equal(c.body.stream, false);
     const delivered = w.tabMessages.filter((m) => m.msg.type === 'scores').flatMap((m) => Object.keys(m.msg.scores));
-    assert.equal(delivered.length, 20);
+    assert.equal(delivered.length, 12);
     assert.equal(w.tabMessages[0].tab, 7);
-    ok('OpenCode Go: one call for a 20-post page, with the right URL, headers and body');
+    ok('OpenCode Go: one call for 12 posts, with the right URL, headers and body');
 
-    const again = await w.send({ type: 'score', tweets: tweets(20) });
-    assert.equal(Object.keys(again.hits).length, 20);
+    const again = await w.send({ type: 'score', tweets: tweets(12) });
+    assert.equal(Object.keys(again.hits).length, 12);
     assert.equal(w.calls.length, 1);
     ok('second request is served from the cache');
 
-    assert.equal(w.store['xiq:stats'].tweets, 20);
+    assert.equal(w.store['xiq:stats'].tweets, 12);
     assert.equal(w.store['xiq:stats'].tokensIn, 1000);
     assert.equal(w.store['xiq:status'].error, null);
     ok('usage stats and status are recorded');
@@ -143,12 +143,12 @@ async function main() {
       return modelReply(body);
     });
     w.store[llmKey] = { provider: 'opencode-go', keys: { 'opencode-go': 'k' } };
-    await w.send({ type: 'score', tweets: tweets(16) });
+    await w.send({ type: 'score', tweets: tweets(10) });
     await sleep(700);
     assert.equal(w.calls.length, 2);
     assert.equal(w.calls[1].body.reasoning_effort, 'low');
     assert.equal(w.tabMessages.filter((m) => m.msg.type === 'scores').length, 1);
-    await w.send({ type: 'score', tweets: tweets(16, 'u') });
+    await w.send({ type: 'score', tweets: tweets(10, 'u') });
     await sleep(700);
     assert.equal(w.calls.length, 3, 'remembers the working shape');
     assert.equal(w.calls[2].body.reasoning_effort, 'low');
@@ -209,9 +209,9 @@ async function main() {
     await w.send({ type: 'score', tweets: tweets(30) });
     await sleep(100);
     const sizes = w.calls.map((c) => Number(c.body.messages[1].content.match(/Score these (\d+) posts/)[1]));
-    eq(sizes, [15, 15]);
-    assert.equal(w.store['xiq:stats'].tokensCached, 1200);
-    ok('30 posts split evenly into 15 + 15 right away; cached tokens are counted');
+    eq(sizes, [10, 10, 10]);
+    assert.equal(w.store['xiq:stats'].tokensCached, 1800);
+    ok('a 30-post page splits evenly into 10 + 10 + 10, all in flight at once; cached tokens are counted');
   }
 
   {

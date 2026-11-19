@@ -3,7 +3,7 @@
   'use strict';
 
   // Things only widgets contain. Kept narrow so the search box's own dropdown never counts.
-  const WIDGETISH = 'section, aside, nav, h2, [data-testid="trend"], [data-testid="UserCell"], [data-testid="news_sidebar"], [data-testid="placementTracking"]';
+  const WIDGETISH = 'section, aside, nav, h2, [data-testid="trend"], [data-testid="UserCell"], [data-testid="news_sidebar"], [data-testid="placementTracking"], [data-who-to-follow]';
 
   function createSidebar(ctx) {
     const dom = root.XIQ.dom;
@@ -75,7 +75,7 @@
 
     function ensure() {
       const s = ctx.getSettings();
-      const col = document.querySelector(dom.SEL.sidebar);
+      const col = dom.sidebarColumn();
       const onSearch = location.pathname.startsWith('/search');
       // Search results keep X's own sidebar (it holds the search filters).
       if (!col || onSearch) {
