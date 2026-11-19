@@ -72,6 +72,11 @@
       if (msg.type === 'score') {
         res = { hits: {} };
         const tweets = msg.tweets;
+        // Screenshot mode answers from "cache", so posts are scored before they render, as on the real site.
+        if (params.has('seed')) {
+          for (const t of tweets) res.hits[t.id] = fakeScore(t);
+          storage.local.set({ 'xiq:status': { provider: 'openrouter', model: 'deepseek/deepseek-v4.1-flash', error: null, tokensToday: 213000, costToday: 0.0312, at: Date.now() } });
+        } else
         setTimeout(() => {
           const scores = {};
           for (const t of tweets) scores[t.id] = fakeScore(t);

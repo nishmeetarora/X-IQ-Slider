@@ -4,6 +4,22 @@
   'use strict';
   const params = new URLSearchParams(location.search);
   history.replaceState(null, '', '/home');
+  if (params.has('light')) document.documentElement.classList.add('light');
+
+  // Outline icons like X's action row, and a colored initial in place of a profile photo.
+  const icon = (d) => `<svg viewBox="0 0 24 24">${d}</svg>`;
+  const ICONS = {
+    reply: icon('<path d="M4 12a8 7 0 1 1 4 6l-4 2 1-4a7 7 0 0 1-1-4z"/>'),
+    repost: icon('<path d="M7 7h10v4M17 17H7v-4M14 4l3 3-3 3M10 20l-3-3 3-3"/>'),
+    like: icon('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),
+    views: icon('<path d="M5 20V12M10 20V5M15 20V9M20 20V14"/>'),
+  };
+  const avatar = (handle) => {
+    let h = 0;
+    for (const c of handle) h = (h * 31 + c.charCodeAt(0)) % 360;
+    const letter = handle.replace(/^demo_/, '')[0].toUpperCase();
+    return `<div class="avatar" style="background:hsl(${h} 32% 52%)">${letter}</div>`;
+  };
 
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
@@ -20,7 +36,7 @@
     let social = '';
     const rt = t.legacy.retweeted_status_result && unwrap(t.legacy.retweeted_status_result.result);
     if (rt) {
-      social = `<div class="social">🔁 ${esc(user(t).name)} reposted</div>`;
+      social = `<div class="social">${esc(user(t).name)} reposted</div>`;
       t = rt;
     }
     const u = user(t);
@@ -31,7 +47,7 @@
       : '';
     const media = (t.legacy.extended_entities && t.legacy.extended_entities.media) || [];
     const photos = media.length
-      ? `<div data-testid="tweetPhoto" class="photo"><img alt="${esc(media[0].ext_alt_text || 'Image')}" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></div>`
+      ? `<div data-testid="tweetPhoto" class="photo"><img alt="${esc(media[0].ext_alt_text || 'Image')}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width:100%;height:100%;opacity:0"></div>`
       : '';
     const ad = promoted ? '<div class="ad"><span>Ad</span></div>' : '';
     const open = promoted ? '<div data-testid="placementTracking">' : '';
@@ -41,7 +57,7 @@
         <div class="tw">
           ${social}
           <div class="row">
-            <div class="avatar"></div>
+            ${avatar(u.handle)}
             <div class="content">
               <div class="head">
                 <div data-testid="User-Name" class="uname">
@@ -52,7 +68,7 @@
               </div>
               <div data-testid="tweetText" lang="en">${esc(text)}</div>
               ${photos}${quote}
-              <div role="group" class="actions"><span>💬 12</span><span>🔁 4</span><span>♡ 88</span><span>📊 9K</span></div>
+              <div role="group" class="actions"><span>${ICONS.reply}12</span><span>${ICONS.repost}4</span><span>${ICONS.like}88</span><span>${ICONS.views}9K</span></div>
             </div>
           </div>
         </div>
